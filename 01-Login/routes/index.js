@@ -15,4 +15,11 @@ router.get('/profile', requiresAuth(), function (req, res, next) {
   });
 });
 
+router.get('/permission', function (req, res, next) {
+  res.render('permission', {
+    title: 'Marketing Permissions',
+    isAuthenticated: req.oidc.isAuthenticated()
+  });
+});
+
 module.exports = router;

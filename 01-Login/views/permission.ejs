@@ -1,0 +1,112 @@
+<%- include('partials/header') -%>
+
+<div class="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-8">
+    
+    <!-- Header Section -->
+    <div class="text-center mb-8">
+      <h1 class="text-2xl font-semibold text-gray-800 mb-4">Marketing Permissions</h1>
+      <p class="text-gray-600 text-sm leading-relaxed">
+        We will use the information you provide on this form to be in touch with you and 
+        to provide updates and marketing.
+      </p>
+    </div>
+
+    <!-- Form Section -->
+    <form class="space-y-6">
+      
+      <!-- Permission Options -->
+      <div>
+        <p class="text-gray-700 text-sm font-medium mb-4">
+          Please let us know all the ways you would like to hear from us:
+        </p>
+        
+        <!-- Email Option -->
+        <div class="flex items-start space-x-3 mb-6">
+          <input 
+            type="checkbox" 
+            id="email" 
+            name="permissions" 
+            value="email"
+            checked
+            class="mt-1 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+          >
+          <div class="flex-1">
+            <label for="email" class="text-gray-700 font-medium text-sm">Email</label>
+            <p class="text-gray-500 text-sm mt-1">
+              We will send you occasional emails about promotions, new products and 
+              important updates to keep you in the loop.
+            </p>
+          </div>
+        </div>
+
+        <!-- Customized Online Advertising Option -->
+        <div class="flex items-start space-x-3 mb-6">
+          <input 
+            type="checkbox" 
+            id="advertising" 
+            name="permissions" 
+            value="advertising"
+            class="mt-1 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+          >
+          <div class="flex-1">
+            <label for="advertising" class="text-gray-700 font-medium text-sm">Customized online advertising</label>
+            <p class="text-gray-500 text-sm mt-1">
+              We will use your information to show you ads that are more relevant 
+              to you to improve your online experience.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Newsletter Toggle -->
+      <div class="flex items-center justify-between py-4">
+        <span class="text-gray-700 text-sm font-medium">Subscribe to our general newsletter</span>
+        <div class="relative">
+          <input 
+            type="checkbox" 
+            id="newsletter" 
+            name="newsletter" 
+            checked
+            class="sr-only"
+          >
+          <label for="newsletter" class="flex items-center cursor-pointer">
+            <div class="relative">
+              <div class="block bg-blue-600 w-12 h-6 rounded-full"></div>
+              <div class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition"></div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Privacy Policy Notice -->
+      <div class="text-xs text-gray-500 leading-relaxed">
+        By clicking below to submit this form, you acknowledge that the information you 
+        provide will be processed in accordance with our Privacy Policy.
+      </div>
+
+      <!-- Submit Button -->
+      <button 
+        type="submit" 
+        class="w-full bg-blue-800 hover:bg-blue-900 text-white font-medium py-3 px-4 rounded-md transition duration-200 ease-in-out"
+      >
+        Submit
+      </button>
+      
+    </form>
+  </div>
+</div>
+
+<style>
+/* Custom toggle switch styling */
+#newsletter:checked + label .dot {
+  transform: translateX(100%);
+  background-color: #ffffff;
+}
+
+#newsletter:not(:checked) + label > div {
+  background-color: #6b7280;
+}
+</style>
+
+<%- include('partials/footer') -%>
