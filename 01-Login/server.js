@@ -5,6 +5,8 @@ const logger = require('morgan');
 const path = require('path');
 const router = require('./routes/index');
 const { auth } = require('express-openid-connect');
+const session = require('express-session');
+const csrf = require('@dr.pogodin/csurf');
 
 dotenv.load();
 
@@ -16,6 +18,23 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Session configuration
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'your-session-secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { 
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  }
+}));
+
+// CSRF protection
+const csrfProtection = csrf();
+// Temporarily disable CSRF for debugging
+// app.use('/permission', csrfProtection);
 
 const config = {
   authRequired: false,

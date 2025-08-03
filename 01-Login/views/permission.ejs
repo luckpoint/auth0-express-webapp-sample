@@ -1,4 +1,12 @@
-<%- include('partials/header') -%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marketing Permissions</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
 
 <div class="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
   <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-8">
@@ -13,7 +21,10 @@
     </div>
 
     <!-- Form Section -->
-    <form class="space-y-6">
+    <form method="POST" action="/permission" class="space-y-6">
+      
+      <!-- CSRF Token -->
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       
       <!-- Permission Options -->
       <div>
@@ -59,25 +70,25 @@
         </div>
       </div>
 
-      <!-- Newsletter Toggle -->
-      <div class="flex items-center justify-between py-4">
-        <span class="text-gray-700 text-sm font-medium">Subscribe to our general newsletter</span>
-        <div class="relative">
-          <input 
-            type="checkbox" 
-            id="newsletter" 
-            name="newsletter" 
-            checked
-            class="sr-only"
-          >
-          <label for="newsletter" class="flex items-center cursor-pointer">
-            <div class="relative">
-              <div class="block bg-blue-600 w-12 h-6 rounded-full"></div>
-              <div class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition"></div>
-            </div>
-          </label>
+        <!-- Newsletter Toggle -->
+        <div class="flex items-center justify-between py-4">
+          <span class="text-gray-700 text-sm font-medium">Subscribe to our general newsletter</span>
+          <div class="relative">
+            <input 
+              type="checkbox" 
+              id="newsletter" 
+              name="newsletter" 
+              checked
+              class="sr-only"
+            >
+            <label for="newsletter" class="flex items-center cursor-pointer">
+              <div class="relative">
+                <div class="toggle-bg block w-12 h-6 rounded-full transition-colors duration-200"></div>
+                <div class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform duration-200"></div>
+              </div>
+            </label>
+          </div>
         </div>
-      </div>
 
       <!-- Privacy Policy Notice -->
       <div class="text-xs text-gray-500 leading-relaxed">
@@ -99,14 +110,51 @@
 
 <style>
 /* Custom toggle switch styling */
-#newsletter:checked + label .dot {
-  transform: translateX(100%);
-  background-color: #ffffff;
+.toggle-bg {
+  background-color: #6b7280; /* Gray background when unchecked */
 }
 
-#newsletter:not(:checked) + label > div {
-  background-color: #6b7280;
+#newsletter:checked + label .toggle-bg {
+  background-color: #2563eb; /* Blue background when checked */
+}
+
+#newsletter:checked + label .dot {
+  transform: translateX(24px); /* Move dot to the right when checked */
+}
+
+#newsletter:not(:checked) + label .dot {
+  transform: translateX(0); /* Keep dot on the left when unchecked */
 }
 </style>
 
-<%- include('partials/footer') -%>
+<script>
+// Handle newsletter toggle checkbox
+document.addEventListener('DOMContentLoaded', function() {
+  const newsletterCheckbox = document.getElementById('newsletter');
+  const toggleBg = document.querySelector('.toggle-bg');
+  const dot = document.querySelector('.dot');
+  
+  function updateToggle() {
+    if (newsletterCheckbox.checked) {
+      toggleBg.style.backgroundColor = '#2563eb';
+      dot.style.transform = 'translateX(24px)';
+    } else {
+      toggleBg.style.backgroundColor = '#6b7280';
+      dot.style.transform = 'translateX(0)';
+    }
+  }
+  
+  // Initial state
+  updateToggle();
+  
+  // Handle click on label
+  document.querySelector('label[for="newsletter"]').addEventListener('click', function(e) {
+    e.preventDefault();
+    newsletterCheckbox.checked = !newsletterCheckbox.checked;
+    updateToggle();
+  });
+});
+</script>
+
+</body>
+</html>
