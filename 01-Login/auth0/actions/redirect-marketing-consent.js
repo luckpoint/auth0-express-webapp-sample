@@ -1,19 +1,19 @@
 /**
- * Handler that will be called during the execution of a PostLogin flow.
+ * PostLoginフロー実行中に呼び出されるハンドラー
  *
- * @param {Event} event - Details about the user and the context in which they are logging in.
- * @param {PostLoginAPI} api - Interface whose methods can be used to change the behavior of the login.
- * Functionality: Check if the user has added the necessary details to their profile and prompt them for those values if they have not. 
+ * @param {Event} event - ユーザーとログイン時のコンテキストに関する詳細情報
+ * @param {PostLoginAPI} api - ログイン動作を変更するために使用できるメソッドのインターフェース
+ * 機能: ユーザーがプロフィールに必要な詳細を追加したかをチェックし、未完了の場合はそれらの値の入力を促す
  */
 
 const QUESTION_SET_ID = "question_set_1";
 
 exports.onExecutePostLogin = async (event, api) => {
-  // INITIAL CHECK
-  // Confirm secrets are set
-  // Confirm the user is either logging in for the first time OR has not completed filling out their profile
+  // 初期チェック
+  // シークレットが設定されているかを確認
+  // ユーザーが初回ログインまたはプロフィール入力が未完了かを確認
   if (!event.secrets.SESSION_TOKEN_SECRET || !event.secrets.FORM_URL) {
-    console.log('Missing required configuration. Skipping.');
+    console.log('必要な設定が不足しています。スキップします。');
     return;
   }
 
@@ -28,29 +28,27 @@ exports.onExecutePostLogin = async (event, api) => {
     return;
   }
 
-  // SETUP SESSION TOKEN TO SEND OVER AND SIGN WITH SHARED SECRET
+  // 共有シークレットで送信・署名するセッショントークンを設定
   const sessionToken = api.redirect.encodeToken({
     secret: event.secrets.SESSION_TOKEN_SECRET,
+    expiresInSeconds: 60,
     payload: {
       iss: `https://${event.request.hostname}/`,
-      subject: event.user.user_id,
-      audience: event.secrets.FORM_URL,
-      expiresIn: '5 minutes',
+      redirect_uri: `https://${event.request.hostname}/continue`,
     },
   });
   // console.log(sessionToken);
   
-  // PERFORM REDIRECT TO EXTERNAL PAGE WITH SESSION TOKEN
+  // セッショントークンと共に外部ページへリダイレクトを実行
   api.redirect.sendUserTo(event.secrets.FORM_URL, {
     query: {
       session_token: sessionToken,
-      redirect_uri: `https://${event.request.hostname}/continue`,
     },
   });
 };
 
-// FINAL VALIDATION ON RETURN
-// OnContinuePostLogin runs when the external page passes back the response and matching state param.
+// 戻り時の最終検証
+// OnContinuePostLoginは外部ページがレスポンスと一致するstateパラメータを返すときに実行される
 
 exports.onContinuePostLogin = async (event, api) => {
   const app_metadata_values = [];
@@ -64,13 +62,13 @@ exports.onContinuePostLogin = async (event, api) => {
     });
   } catch (error) {
     // console.log(error.message);
-    return api.access.deny('Error occurred during redirect.');
+    return api.access.deny('リダイレクト中にエラーが発生しました。');
   }
   
-  var customClaims = decodedToken.other;
-  // console.log(customClaims);
+  let customClaims = decodedToken.other;
+  console.log(customClaims);
 
-  // Set response values into the user metadata or app metadata.
+  // レスポンス値をユーザーメタデータまたはアプリメタデータに設定
   for (const [key, value] of Object.entries(customClaims)) {
     console.log(key);
     if (!skipped_claims.includes(key)) {
@@ -82,7 +80,7 @@ exports.onContinuePostLogin = async (event, api) => {
     }
   }
   
-  // Add question set to list of sets already completed.
+  // 完了済みセットのリストに質問セットを追加
   var question_sets_completed = event.user.app_metadata["question_sets_completed"] ?? [];
   question_sets_completed.push(QUESTION_SET_ID);
   api.user.setAppMetadata("question_sets_completed", question_sets_completed);

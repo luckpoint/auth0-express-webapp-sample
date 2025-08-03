@@ -11,7 +11,7 @@
 <div class="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
   <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-8">
     
-    <!-- Header Section -->
+    <!-- ヘッダーセクション -->
     <div class="text-center mb-8">
       <h1 class="text-2xl font-semibold text-gray-800 mb-4">Marketing Permissions</h1>
       <p class="text-gray-600 text-sm leading-relaxed">
@@ -20,19 +20,19 @@
       </p>
     </div>
 
-    <!-- Form Section -->
+    <!-- フォームセクション -->
     <form method="POST" action="/permission" class="space-y-6">
       
-      <!-- CSRF Token -->
+      <!-- CSRFトークン -->
       <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       
-      <!-- Permission Options -->
+      <!-- 許可オプション -->
       <div>
         <p class="text-gray-700 text-sm font-medium mb-4">
           Please let us know all the ways you would like to hear from us:
         </p>
         
-        <!-- Email Option -->
+        <!-- メールオプション -->
         <div class="flex items-start space-x-3 mb-6">
           <input 
             type="checkbox" 
@@ -51,7 +51,7 @@
           </div>
         </div>
 
-        <!-- Customized Online Advertising Option -->
+        <!-- カスタマイズされたオンライン広告オプション -->
         <div class="flex items-start space-x-3 mb-6">
           <input 
             type="checkbox" 
@@ -70,7 +70,7 @@
         </div>
       </div>
 
-        <!-- Newsletter Toggle -->
+        <!-- ニュースレタートグル -->
         <div class="flex items-center justify-between py-4">
           <span class="text-gray-700 text-sm font-medium">Subscribe to our general newsletter</span>
           <div class="relative">
@@ -90,13 +90,13 @@
           </div>
         </div>
 
-      <!-- Privacy Policy Notice -->
+      <!-- プライバシーポリシー通知 -->
       <div class="text-xs text-gray-500 leading-relaxed">
         By clicking below to submit this form, you acknowledge that the information you 
         provide will be processed in accordance with our Privacy Policy.
       </div>
 
-      <!-- Submit Button -->
+      <!-- 送信ボタン -->
       <button 
         type="submit" 
         class="w-full bg-blue-800 hover:bg-blue-900 text-white font-medium py-3 px-4 rounded-md transition duration-200 ease-in-out"
@@ -109,26 +109,26 @@
 </div>
 
 <style>
-/* Custom toggle switch styling */
+/* カスタムトグルスイッチのスタイリング */
 .toggle-bg {
-  background-color: #6b7280; /* Gray background when unchecked */
+  background-color: #6b7280; /* 未チェック時のグレー背景 */
 }
 
 #newsletter:checked + label .toggle-bg {
-  background-color: #2563eb; /* Blue background when checked */
+  background-color: #2563eb; /* チェック時のブルー背景 */
 }
 
 #newsletter:checked + label .dot {
-  transform: translateX(24px); /* Move dot to the right when checked */
+  transform: translateX(24px); /* チェック時に右へドットを移動 */
 }
 
 #newsletter:not(:checked) + label .dot {
-  transform: translateX(0); /* Keep dot on the left when unchecked */
+  transform: translateX(0); /* 未チェック時は左にドットを維持 */
 }
 </style>
 
 <script>
-// Handle newsletter toggle checkbox
+// ニュースレタートグルチェックボックスの処理
 document.addEventListener('DOMContentLoaded', function() {
   const newsletterCheckbox = document.getElementById('newsletter');
   const toggleBg = document.querySelector('.toggle-bg');
@@ -144,10 +144,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
   
-  // Initial state
+  // 初期状態
   updateToggle();
   
-  // Handle click on label
+  // ラベルクリックの処理
   document.querySelector('label[for="newsletter"]').addEventListener('click', function(e) {
     e.preventDefault();
     newsletterCheckbox.checked = !newsletterCheckbox.checked;
