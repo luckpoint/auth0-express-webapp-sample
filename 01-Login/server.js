@@ -33,8 +33,7 @@ app.use(session({
 
 // CSRF protection
 const csrfProtection = csrf();
-// Temporarily disable CSRF for debugging
-// app.use('/permission', csrfProtection);
+app.use('/permission', csrfProtection);
 
 const config = {
   authRequired: false,

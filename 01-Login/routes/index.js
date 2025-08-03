@@ -84,6 +84,7 @@ router.get('/permission', function (req, res, next) {
     };
     
     res.render('permission', {
+      csrfToken: req.csrfToken()
     });
   } catch (error) {
     console.error('JWT検証エラー:', error.message);
